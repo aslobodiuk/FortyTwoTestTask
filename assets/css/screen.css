@@ -1,1 +1,25 @@
- 
+body {
+  font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+}
+
+h1{
+	font-weight:bold;
+	text-align: center;
+}
+
+.label {
+  font-weight:bold;
+  width: 120px;
+  display: inline-block;
+}
+
+.head {
+	font-weight:bold;
+  width: 200px;
+  text-align: center;
+}
+
+textarea {
+	resize: none;
+	border: 0px;
+} 
