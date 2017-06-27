@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from . import views
 from .models import Person
 
@@ -29,6 +30,17 @@ class HomeViewTest(TestCase):
 
 class InitialDataTest(TestCase):
     fixtures = ['initial.json']
+
+    def test_adminuser(self):
+        "check if initial superuser exists"
+
+        username = 'alex'
+        password = 'Gfhfdjpbr19`'
+
+        u = User.objects.get(pk=1)
+        self.assertEqual(u.is_superuser, True)
+        self.assertEqual(u.username == username, True)
+        self.assertEqual(u.check_password(password), True)
 
     def test_model_person(self):
         "existing of initial contact data"
