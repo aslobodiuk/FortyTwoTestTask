@@ -1,10 +1,12 @@
 from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
-from apps.hello import views
+from . import views
+from .models import Person
 
 
 class HomeViewTest(TestCase):
+    fixtures = ['initial.json']
 
     def test_home(self):
         "test for view, checking context"
@@ -15,7 +17,7 @@ class HomeViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
 
-        self.assertEqual(response.context["p"].lastname, c.name)
+        self.assertEqual(response.context["p"].name, c.name)
         self.assertEqual(response.context["p"].lastname, c.lastname)
         self.assertEqual(response.context["p"].dob, c.dob)
         self.assertEqual(response.context["p"].bio, c.bio)
@@ -24,7 +26,9 @@ class HomeViewTest(TestCase):
         self.assertEqual(response.context["p"].skype, c.skype)
         self.assertEqual(response.context["p"].othercontacts, c.othercontacts)
 
+
 class InitialDataTest(TestCase):
+    fixtures = ['initial.json']
 
     def test_model_person(self):
         "existing of initial contact data"

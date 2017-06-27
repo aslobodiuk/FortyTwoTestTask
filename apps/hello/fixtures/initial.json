@@ -1,0 +1,34 @@
+[
+{
+  "pk": 1, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "alex", 
+    "first_name": "", 
+    "last_name": "", 
+    "is_active": true, 
+    "is_superuser": true, 
+    "is_staff": true, 
+    "last_login": "2017-06-27T14:36:55.428Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$12000$DMNhyRAWakvx$2heC2Rz1UYD9Ml7wHy6e2mqbgI9OJno7i12yxvXlg/I=", 
+    "email": "aslobodiuk@gmail.com", 
+    "date_joined": "2017-06-27T14:36:31.779Z"
+  }
+},
+{
+  "pk": 1, 
+  "model": "hello.person", 
+  "fields": {
+    "bio": "This is Bio. This is Bio. This is Bio.", 
+    "name": "Aleksey", 
+    "dob": "1993-01-19", 
+    "lastname": "Slobodyuk", 
+    "othercontacts": "https://www.facebook.com/aslobodiuk\r\nhttps://vk.com/alex_sl", 
+    "skype": "aslobodiuk", 
+    "jabber": "aslobodiuk@42cc.co", 
+    "email": "aslobodiuk@gmail.com"
+  }
+}
+]
