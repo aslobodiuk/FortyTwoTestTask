@@ -34,6 +34,10 @@ def help(request):
     ))
 
 
+def requests(request):
+    return render(request, 'requests.html', {})
+
+
 def home(request):
     p = Person.objects.first()
     return render(request, 'home.html', {'p': p})
