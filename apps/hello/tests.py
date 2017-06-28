@@ -45,3 +45,13 @@ class InitialDataTest(TestCase):
     def test_model_person(self):
         "existing of initial contact data"
         self.assertTrue(Person.objects.filter(pk=1).exists())
+
+
+class RequestViewTest(TestCase):
+
+    def test_help(self):
+        "test for help view"
+        client = Client()
+        response = client.get(reverse(views.help))
+
+        self.assertEqual(response.status_code, 200)
