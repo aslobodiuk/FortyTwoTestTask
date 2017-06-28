@@ -3,7 +3,7 @@ from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from . import views
-from .models import Person
+from .models import Person, Request
 
 
 class HomeViewTest(TestCase):
@@ -71,3 +71,15 @@ class RequestModelTest(TestCase):
         "test string representations"
         req = Request(link="/requests/")
         self.assertEqual(str(req), req.link)
+
+
+class MiddlewareTests(TestCase):
+
+    def test_requestProcessing(self):
+        "test middleware for input data in model"
+        client = Client()
+        response = client.get(reverse(views.home))
+        count = Request.objects.all().count()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(count, 1)

@@ -13,3 +13,14 @@ class Person(models.Model):
 
     def __unicode__(self):
         return self.name + ' ' + self.lastname
+
+
+class Request(models.Model):
+    link = models.URLField()
+    time = models.DateTimeField()
+
+    def __unicode__(self):
+        return '%s' % self.link
+
+    class Meta:
+        ordering = ["time"]
