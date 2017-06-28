@@ -49,6 +49,14 @@ class InitialDataTest(TestCase):
 
 class RequestViewTest(TestCase):
 
+    def test_request(self):
+        "test for view"
+        client = Client()
+        response = client.get(reverse(views.requests))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'requests.html')
+
     def test_help(self):
         "test for help view"
         client = Client()
