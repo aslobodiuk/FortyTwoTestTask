@@ -63,3 +63,11 @@ class RequestViewTest(TestCase):
         response = client.get(reverse(views.help))
 
         self.assertEqual(response.status_code, 200)
+
+
+class RequestModelTest(TestCase):
+
+    def test_string_representation(self):
+        "test string representations"
+        req = Request(link="/requests/")
+        self.assertEqual(str(req), req.link)
