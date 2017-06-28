@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}{% endblock %}
+
+{% block content %}
+
+    {% block content_title %}<h1>42 Coffee Cups Test Assignment</h1>{% endblock %}
+
+    <div class='request-holder'></div>
+    <hr/>
+    <a href={% url 'home' %}>home</a>
+
+{% endblock %}
