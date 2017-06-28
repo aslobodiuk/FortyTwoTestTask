@@ -37,7 +37,7 @@ class InitialDataTest(TestCase):
         username = 'alex'
         password = 'Gfhfdjpbr19`'
 
-        u = User.objects.get(pk=1)
+        u = User.objects.first()
         self.assertEqual(u.is_superuser, True)
         self.assertEqual(u.username == username, True)
         self.assertEqual(u.check_password(password), True)
