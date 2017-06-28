@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils import simplejson
 from django.http import HttpResponse
-from .models import Person
+from .models import Person, Request
 
 
 class JsonResponse(HttpResponse):
@@ -20,15 +20,11 @@ class JsonResponse(HttpResponse):
 
 
 def help(request):
-    requests = [
-                    {"text": "/", "id": 1},
-                    {"text": "/requests/", "id": 2},
-                    {"text": "/requests/", "id": 3}
-                ]
+    requests = Request.objects.filter().reverse()[0:10]
     return JsonResponse(map(
         lambda r: {
-            'text': r["text"],
-            'id': r["id"],
+            'text': r.link,
+            'id': r.id,
         },
         requests
     ))
