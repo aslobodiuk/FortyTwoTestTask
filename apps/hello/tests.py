@@ -2,21 +2,23 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from . import views
+
 from .models import Person, Request
+from . import views
 
 
 class HomeViewTest(TestCase):
     fixtures = ['initial.json']
 
     def test_home(self):
-        "test for view, checking context"
+        "test for view, checking context, rendering to html"
         client = Client()
         response = client.get(reverse(views.home))
         c = Person.objects.first()
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
 
         self.assertEqual(response.context["p"].name, c.name)
         self.assertEqual(response.context["p"].lastname, c.lastname)
@@ -42,9 +44,22 @@ class InitialDataTest(TestCase):
         self.assertEqual(u.username == username, True)
         self.assertEqual(u.check_password(password), True)
 
+
+class PersonModelTest(TestCase):
+    fixtures = ['initial.json']
+
+    def test_string_representation(self):
+        "test string representations"
+        p = Person.objects.first()
+        self.assertEqual(str(p), p.name + ' ' + p.lastname)
+
     def test_model_person(self):
         "existing of initial contact data"
         self.assertTrue(Person.objects.filter(pk=1).exists())
+
+    def test_model_el_cnt(self):
+        "testing empty, or 2+ elements in DB"
+        self.assertEqual(Person.objects.all().count(), 1)
 
 
 class RequestViewTest(TestCase):
@@ -56,6 +71,7 @@ class RequestViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'requests.html')
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
 
     def test_help(self):
         "test for help view"
@@ -63,6 +79,7 @@ class RequestViewTest(TestCase):
         response = client.get(reverse(views.help))
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/json')
 
 
 class RequestModelTest(TestCase):
