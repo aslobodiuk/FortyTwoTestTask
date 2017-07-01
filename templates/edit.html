@@ -6,7 +6,9 @@
 
   {% block content_title %}<h1>42 Coffee Cups Test Assignment</h1>{% endblock %}
 
-  
+  {% block javascript %}
+    <script type='text/javascript' src="{% static 'js/ajaxsubmit.js' %}"></script>
+  {% endblock %}
   
   <br><br>
   <form enctype="multipart/form-data" action="" method="post" id="contactform">
@@ -18,7 +20,7 @@
         <p><div class="label">Last name:</div><input type="text" value="Slobodiuk"/></p>
         <p><div class="label">Date of birth:</div><input type="text" value="Jan. 19, 1993"/></p>
         <p><div class="label">Photo:</div><input type="text"/></p>
-        <img height="200px" width="200px" src="{% static 'img/avatar.png' %}">
+        <img id="images" height="200px" width="200px" src="{% static 'img/avatar.png' %}">
       </div>  
       <div class="col-sm-12 col-md-5 col-lg-5">
         <div class="head">Contacts</div>

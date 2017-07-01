@@ -1,3 +1,4 @@
+from json import dumps
 from django.shortcuts import render
 from django.utils import simplejson
 from django.http import HttpResponse
@@ -40,4 +41,6 @@ def home(request):
 
 
 def edit(request):
+    if request.method == 'POST':
+        return HttpResponse(dumps({'result': 'success'}))
     return render(request, 'edit.html', {})
