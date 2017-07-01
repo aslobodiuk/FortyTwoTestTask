@@ -37,3 +37,6 @@ def requests(request):
 def home(request):
     p = Person.objects.first()
     return render(request, 'home.html', {'p': p})
+
+def edit(request):
+    return render(request, 'edit.html', {})

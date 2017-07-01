@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}{% endblock %}
+
+{% block content %}
+
+  {% block content_title %}<h1>42 Coffee Cups Test Assignment</h1>{% endblock %}
+
+  
+  
+  <br><br>
+  <form enctype="multipart/form-data" action="" method="post" id="contactform">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-sm-1 col-md-1 col-lg-1"></div>
+      <div class="col-sm-12 col-md-5 col-lg-5">
+        <p><div class="label">Name:</div><input type="text" value="Aleksey"/></p>
+        <p><div class="label">Last name:</div><input type="text" value="Slobodiuk"/></p>
+        <p><div class="label">Date of birth:</div><input type="text" value="Jan. 19, 1993"/></p>
+        <p><div class="label">Photo:</div><input type="text"/></p>
+        <img height="200px" width="200px" src="{% static 'img/avatar.png' %}">
+      </div>  
+      <div class="col-sm-12 col-md-5 col-lg-5">
+        <div class="head">Contacts</div>
+        <p><div class="label">Email:</div><input type="text" value="aslobodiuk@gmail.com"/></p>
+        <p><div class="label">Jabber:</div><input type="text" value="aslobodiuk@42cc.co"/></p>
+        <p><div class="label">Skype:</div><input type="text" value="aslobodiuk"/></p>
+        <p><div class="label">Bio:</div></p>
+        <textarea cols="40" rows="4" style="border: solid 1px;">This is Bio. This is Bio. This is Bio.</textarea>
+        <p><div class="label">Other contacts:</div></p>
+        <textarea cols="40" rows="4" style="border: solid 1px;">https://www.facebook.com/aslobodiuk
+  https://vk.com/alex_sl</textarea>
+      </div>  
+    </div>
+    <div class="control">
+      <input type="submit" value="Save" id="sendbutton" class='btn btn-default'/>
+      <a href="{% url 'home' %}" class='btn btn-default'>Cancel</a>
+      <div id="progress">
+        <div id="bar"></div>
+        <div id="percent"></div >
+      </div>
+      <div id="message"></div>
+    </div>
+  </form>
+
+  <hr/>
+  <a href={% url 'requests' %}>requests</a>
+
+{% endblock %}

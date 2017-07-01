@@ -11,6 +11,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^requests/$', views.requests, name='requests'),
     url(r'^help/$', views.help, name='help'),
+    url(r'^edit/$', views.edit, name='edit'),
 )
 
 urlpatterns += staticfiles_urlpatterns()
