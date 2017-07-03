@@ -1,8 +1,10 @@
 from json import dumps
 from django.shortcuts import render
 from django.utils import simplejson
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Person, Request
+
 
 
 class JsonResponse(HttpResponse):
@@ -39,7 +41,7 @@ def home(request):
     p = Person.objects.first()
     return render(request, 'home.html', {'p': p})
 
-
+@login_required()
 def edit(request):
     if request.method == 'POST':
         return HttpResponse(dumps({'result': 'success'}))

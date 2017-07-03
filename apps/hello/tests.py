@@ -36,8 +36,8 @@ class InitialDataTest(TestCase):
     def test_adminuser(self):
         "check if initial superuser exists"
 
-        username = 'alex'
-        password = 'Gfhfdjpbr19`'
+        username = 'admin'
+        password = 'admin'
 
         u = User.objects.first()
         self.assertEqual(u.is_superuser, True)
@@ -106,7 +106,7 @@ class EditViewTest(TestCase):
     fixtures = ['initial.json']
 
     def test_django_widget(self):
-        self.client.login(username='alex', password='Gfhfdjpbr19`')
+        self.client.login(username='admin', password='admin')
         response = self.client.get(reverse('edit'))
         self.assertContains(response,
                             u'''<input class="datepicker" id="id_dob"''')
