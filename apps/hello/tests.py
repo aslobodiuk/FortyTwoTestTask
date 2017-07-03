@@ -106,7 +106,7 @@ class EditViewTest(TestCase):
     fixtures = ['initial.json']
 
     def test_django_widget(self):
-        self.client.login(username='admin', password='admin')
+        self.client.login(username='alex', password='Gfhfdjpbr19`')
         response = self.client.get(reverse('edit'))
         self.assertContains(response,
                             u'''<input class="datepicker" id="id_dob"''')
