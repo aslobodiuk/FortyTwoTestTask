@@ -100,3 +100,15 @@ class MiddlewareTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(count, 1)
+
+
+class EditViewTest(TestCase):
+    fixtures = ['initial.json']
+
+    def test_django_widget(self):
+        self.client.login(username='admin', password='admin')
+        response = self.client.get(reverse('edit'))
+        self.assertContains(response,
+                            u'''<input class="datepicker" id="id_dob"''')
+        self.assertContains(response,
+                            u'''{dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-50:'}''')
