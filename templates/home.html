@@ -16,14 +16,15 @@
       <p><div class="label">Name:</div>{{p.name}}</p>
       <p><div class="label">Last name:</div>{{p.lastname}}</p>
       <p><div class="label">Date of birth:</div>{{p.dob}}</p>
-      <p><div class="label">Bio:</div></p>
-      <textarea cols="30" readonly="readonly" rows="4">{{p.bio}}</textarea>
+      <div class="info">Photo:</div><img height="200px" width="200px" src="{{p.photo.url}}"/>
     </div>  
     <div class="col-sm-12 col-md-5 col-lg-5">
       <div class="head">Contacts</div>
       <p><div class="label">Email:</div>{{p.email}}</p>
       <p><div class="label">Jabber:</div>{{p.jabber}}</p>
       <p><div class="label">Skype:</div>{{p.skype}}</p>
+      <p><div class="label">Bio:</div></p>
+      <textarea cols="40" readonly="readonly" rows="4">{{p.bio}}</textarea>
       <p><div class="label">Other contacts:</div></p>
       <textarea cols="40" readonly="readonly" rows="4">{{p.othercontacts}}</textarea>
     </div>  

@@ -1,4 +1,6 @@
+import os
 from django.db import models
+from fortytwo_test_task.settings import STATIC_URL
 
 
 class Person(models.Model):
@@ -10,6 +12,10 @@ class Person(models.Model):
     jabber = models.EmailField('Jabber ID')
     skype = models.CharField('Skype ID', max_length=50, null=1, blank=1)
     othercontacts = models.TextField('Other contacts', null=1, blank=1)
+    photo = models.ImageField(
+        upload_to="img",
+        default=os.path.join(STATIC_URL, "img/avatar.png")
+    )
 
     def __unicode__(self):
         return self.name + ' ' + self.lastname
