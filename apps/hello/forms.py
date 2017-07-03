@@ -1,17 +1,17 @@
 from django.forms import ModelForm
 from django.forms import forms
-from django.core.validators import validate_email
-from django_hello_world.hello.models import Person
-from django_hello_world.hello.widgets import DatePickerWidget
+from .models import Person
+from .widgets import DatePickerWidget
 
 
 class ContactForm(ModelForm):
     class Meta:
         model = Person
         widgets = {
-            'birthday': DatePickerWidget(
-            params="dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-50:'",
-            attrs={'class': 'datepicker'})
+            'dob': DatePickerWidget(
+                params="dateFormat: 'yy-mm-dd', " +
+                "changeYear: true, yearRange: '-50:'"
+            )
         }
 
     def clean_bio(self):
@@ -24,4 +24,4 @@ class ContactForm(ModelForm):
         othercontacts = self.cleaned_data['othercontacts']
         if len(othercontacts) > 140:
             raise forms.ValidationError("Max length 140 characters!")
-        return other
+        return othercontacts

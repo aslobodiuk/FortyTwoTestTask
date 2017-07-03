@@ -6,8 +6,13 @@
 
   {% block content_title %}<h1>42 Coffee Cups Test Assignment</h1>{% endblock %}
 
+  {% block css %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  {% endblock %}
+  
   {% block javascript %}
     <script type='text/javascript' src="{% static 'js/ajaxsubmit.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   {% endblock %}
   
   <br><br>
@@ -16,22 +21,21 @@
     <div class="row">
       <div class="col-sm-1 col-md-1 col-lg-1"></div>
       <div class="col-sm-12 col-md-5 col-lg-5">
-        <p><div class="label">Name:</div><input type="text" value="Aleksey"/></p>
-        <p><div class="label">Last name:</div><input type="text" value="Slobodiuk"/></p>
-        <p><div class="label">Date of birth:</div><input type="text" value="Jan. 19, 1993"/></p>
-        <p><div class="label">Photo:</div><input type="text"/></p>
-        <img id="images" height="200px" width="200px" src="{% static 'img/avatar.png' %}">
+        <p><div class="label">Name:</div>{{form.name}}</p>
+        <p><div class="label">Last name:</div>{{form.lastname}}</p>
+        <div class="label">Date of birth:</div>{{form.dob}}
+        <p><div class="label">Photo:</div>{{form.photo}}</p>
+        <img id="images">
       </div>  
       <div class="col-sm-12 col-md-5 col-lg-5">
         <div class="head">Contacts</div>
-        <p><div class="label">Email:</div><input type="text" value="aslobodiuk@gmail.com"/></p>
-        <p><div class="label">Jabber:</div><input type="text" value="aslobodiuk@42cc.co"/></p>
-        <p><div class="label">Skype:</div><input type="text" value="aslobodiuk"/></p>
+        <p><div class="label">Email:</div>{{form.email}}</p>
+        <p><div class="label">Jabber:</div>{{form.jabber}}</p>
+        <p><div class="label">Skype:</div>{{form.skype}}</p>
         <p><div class="label">Bio:</div></p>
-        <textarea cols="40" rows="4" style="border: solid 1px;">This is Bio. This is Bio. This is Bio.</textarea>
+        {{form.bio}}
         <p><div class="label">Other contacts:</div></p>
-        <textarea cols="40" rows="4" style="border: solid 1px;">https://www.facebook.com/aslobodiuk
-  https://vk.com/alex_sl</textarea>
+        {{form.othercontacts}}
       </div>  
     </div>
     <div class="control">
