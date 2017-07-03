@@ -20,6 +20,9 @@ class Person(models.Model):
     def __unicode__(self):
         return self.name + ' ' + self.lastname
 
+    def __getitem__(self, item):
+        return getattr(self, item)
+
 
 class Request(models.Model):
     link = models.URLField()
