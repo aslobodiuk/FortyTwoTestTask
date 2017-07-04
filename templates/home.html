@@ -23,9 +23,9 @@
       <p><div class="label">Jabber:</div>{{p.jabber}}</p>
       <p><div class="label">Skype:</div>{{p.skype}}</p>
       <p><div class="label">Bio:</div></p>
-      <textarea cols="40" readonly="readonly" rows="4">{{p.bio}}</textarea>
+      <div>{{p.bio|linebreaks}}</div>
       <p><div class="label">Other contacts:</div></p>
-      <textarea cols="40" readonly="readonly" rows="4">{{p.othercontacts}}</textarea>
+      <div>{{p.othercontacts|linebreaks}}</div>
     </div>  
   </div>
 

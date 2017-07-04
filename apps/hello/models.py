@@ -26,7 +26,7 @@ class Person(models.Model):
 
 class Request(models.Model):
     link = models.URLField()
-    time = models.DateTimeField()
+    time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return '%s' % self.link

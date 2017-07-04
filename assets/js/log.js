@@ -49,6 +49,6 @@ $(document).ready(function() {
       document.title = document.title.slice(document.title.lastIndexOf(')') + 1);
     }
   });
-  
+
   var timerId = setInterval(reload, 1000);
 });

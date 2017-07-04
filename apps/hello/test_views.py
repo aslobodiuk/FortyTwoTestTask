@@ -1,20 +1,22 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
+import json
 from django.test import TestCase
-from django.test.client import Client
+from model_mommy import mommy
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-
-from .models import Person, Request
+from .models import Person
 from . import views
 
 
 class HomeViewTest(TestCase):
-    fixtures = ['initial.json']
+
+    def setUp(self):
+        self.person = mommy.make(Person)
 
     def test_home(self):
         "test for view, checking context, rendering to html"
-        client = Client()
-        response = client.get(reverse(views.home))
+        response = self.client.get(reverse(views.home))
         c = Person.objects.first()
 
         self.assertEqual(response.status_code, 200)
@@ -30,9 +32,29 @@ class HomeViewTest(TestCase):
         self.assertEqual(response.context["p"].skype, c.skype)
         self.assertEqual(response.context["p"].othercontacts, c.othercontacts)
 
+    def test_data_in_template(self):
+        "test if template contains data from db"
+        response = self.client.get(reverse(views.home))
+        c = Person.objects.first()
 
-class InitialDataTest(TestCase):
-    fixtures = ['initial.json']
+        self.assertContains(response, c.name)
+        self.assertContains(response, c.lastname)
+        self.assertContains(response, c.dob.year)
+        self.assertContains(response, c.dob.month)
+        self.assertContains(response, c.dob.day)
+        self.assertContains(response, c.email)
+        self.assertContains(response, c.jabber)
+        self.assertContains(response, c.skype)
+
+
+class AdminDataTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_superuser(
+            username='admin',
+            email='aslobodiuk@example.com',
+            password='admin'
+        )
 
     def test_adminuser(self):
         "check if initial superuser exists"
@@ -46,29 +68,11 @@ class InitialDataTest(TestCase):
         self.assertEqual(u.check_password(password), True)
 
 
-class PersonModelTest(TestCase):
-    fixtures = ['initial.json']
-
-    def test_string_representation(self):
-        "test string representations"
-        p = Person.objects.first()
-        self.assertEqual(str(p), p.name + ' ' + p.lastname)
-
-    def test_model_person(self):
-        "existing of initial Person data"
-        self.assertTrue(Person.objects.filter(pk=1).exists())
-
-    def test_model_el_cnt(self):
-        "testing empty, or 2+ elements in DB"
-        self.assertEqual(Person.objects.all().count(), 1)
-
-
 class RequestViewTest(TestCase):
 
     def test_request(self):
         "test for view"
-        client = Client()
-        response = client.get(reverse(views.requests))
+        response = self.client.get(reverse(views.requests))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'requests.html')
@@ -76,35 +80,55 @@ class RequestViewTest(TestCase):
 
     def test_help(self):
         "test for help view"
-        client = Client()
-        response = client.get(reverse(views.help))
+        response = self.client.get(reverse(views.help))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/json')
 
+    def test_for_last_10_requests(self):
+        "test if view return last 10 requests"
+        for i in range(10):
+            response = self.client.get(reverse(views.home))
+        for i in range(10):
+            response = self.client.get(reverse(views.help))
+        json_data = json.loads(response.content)
 
-class RequestModelTest(TestCase):
+        self.assertEqual(len(json_data), 10)
+        for i in range(10):
+            self.assertEqual(json_data[i]['text'], reverse(views.help))
+            self.assertTrue(json_data[i]['id'] in range(11, 21))
 
-    def test_string_representation(self):
-        "test string representations"
-        req = Request(link="/requests/")
-        self.assertEqual(str(req), req.link)
-
-
-class MiddlewareTests(TestCase):
-
-    def test_requestProcessing(self):
-        "test middleware for input data in model"
-        client = Client()
-        response = client.get(reverse(views.home))
-        count = Request.objects.all().count()
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(count, 1)
+    def test_for_last_requests_lt_10(self):
+        "test if db has less than 10 requests"
+        for i in range(5):
+            response = self.client.get(reverse(views.help))
+        json_data = json.loads(response.content)
+        self.assertEqual(len(json_data), 5)
 
 
 class EditViewTest(TestCase):
-    fixtures = ['initial.json']
+
+    def setUp(self):
+        self.person = mommy.make(Person)
+        self.user = User.objects.create_superuser(
+            username='admin',
+            email='aslobodiuk@example.com',
+            password='admin'
+        )
+
+    def test_initial_data_in_template(self):
+        "test if template contains data from db"
+        self.client.login(username="admin", password="admin")
+        response = self.client.get(reverse(views.edit))
+        c = Person.objects.first()
+
+        self.assertContains(response, c.name)
+        self.assertContains(response, c.lastname)
+        self.assertContains(response, c.dob.year)
+        self.assertContains(response, c.dob.month)
+        self.assertContains(response, c.dob.day)
+        self.assertContains(response, c.email)
+        self.assertContains(response, c.jabber)
 
     def test_django_widget(self):
         "test for datepicker widget"
@@ -123,7 +147,7 @@ class EditViewTest(TestCase):
         "test auth"
         response = self.client.post(reverse('edit'))
         self.assertEqual(response.status_code, 302)
-        self.client.login(username='admin', password='admin')
+        self.client.login(username="admin", password="admin")
         response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 200)
 
@@ -198,7 +222,7 @@ class EditViewTest(TestCase):
         self.assertEqual(p.bio, context["bio"])
         self.assertEqual(p.othercontacts, context["othercontacts"])
 
-    def test_wuth_wrong_post_data(self):
+    def test_with_wrong_post_data(self):
         "wrong post data"
         self.client.login(username='admin', password='admin')
         p = Person.objects.first()
