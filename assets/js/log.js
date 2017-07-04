@@ -44,11 +44,12 @@ $(document).ready(function() {
 
   reload();
 
+  var timerId = setInterval(reload, 1000);
+
   $(window).focus(function() {
     if (document.title.includes(')')){
       document.title = document.title.slice(document.title.lastIndexOf(')') + 1);
     }
   });
 
-  var timerId = setInterval(reload, 1000);
 });
