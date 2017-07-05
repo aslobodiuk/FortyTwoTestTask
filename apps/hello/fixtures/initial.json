@@ -4,7 +4,6 @@
   "model": "hello.person", 
   "fields": {
     "bio": "This is Bio. This is Bio. This is Bio.", 
-    "photo": "/static/img/avatar.png", 
     "name": "Aleksey", 
     "dob": "1993-01-19", 
     "lastname": "Slobodyuk", 
