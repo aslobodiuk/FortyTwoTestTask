@@ -33,3 +33,18 @@ class Request(models.Model):
 
     class Meta:
         ordering = ["time"]
+
+
+class Change(models.Model):
+    STATUS_CHOICES = (
+        ('U', 'Updated'),
+        ('C', 'Created'),
+        ('D', 'Deleted'),
+    )
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES)
+    object = models.CharField(max_length=50)
+    model = models.CharField(max_length=50)
+    time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["time"]
