@@ -19,6 +19,7 @@ class Migration(DataMigration):
             'bio': ('django.db.models.fields.TextField', [], {'null': '1', 'blank': '1'}),
             'dob': ('django.db.models.fields.DateField', [], {'db_index': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
+            'photo': ('django.db.models.fields.files.ImageField', [], {'default': "'/static/img/avatar.png'", 'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'jabber': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             'lastname': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
