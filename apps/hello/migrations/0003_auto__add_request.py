@@ -1,17 +1,26 @@
 # -*- coding: utf-8 -*-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
+
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        from django.core.management import call_command
-        call_command("loaddata", "initial.json")
+        # Adding model 'Request'
+        db.create_table(u'hello_request', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('link', self.gf('django.db.models.fields.URLField')(max_length=200)),
+            ('time', self.gf('django.db.models.fields.DateTimeField')()),
+        ))
+        db.send_create_signal(u'hello', ['Request'])
+
 
     def backwards(self, orm):
-        "Write your backwards methods here."
+        # Deleting model 'Request'
+        db.delete_table(u'hello_request')
+
 
     models = {
         u'hello.person': {
@@ -25,8 +34,13 @@ class Migration(DataMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'othercontacts': ('django.db.models.fields.TextField', [], {'null': '1', 'blank': '1'}),
             'skype': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': '1', 'blank': '1'})
+        },
+        u'hello.request': {
+            'Meta': {'ordering': "['time']", 'object_name': 'Request'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'link': ('django.db.models.fields.URLField', [], {'max_length': '200'}),
+            'time': ('django.db.models.fields.DateTimeField', [], {})
         }
     }
 
     complete_apps = ['hello']
-    symmetrical = True
