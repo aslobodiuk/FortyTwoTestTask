@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load hello_extras %}
+
 {% block title %}{% endblock %}
 
 {% block content %}
@@ -8,7 +10,12 @@
  
   
   <br><br>
-  <div class="login"><a href ="{% url 'edit' %}"/>Edit</a></div>
+  <div class="login">
+    <a href ="{% url 'edit' %}"/>Edit </a>
+    {% if user.is_authenticated %}
+      {% edit_link p %}
+    {% endif %}
+  </div>
   <div class="row">
     <div class="col-sm-1 col-md-1 col-lg-1"></div>
     <div class="col-sm-12 col-md-5 col-lg-5">
