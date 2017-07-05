@@ -7,8 +7,8 @@ from django.core.management import call_command
 
 class CommandTest(TestCase):
 
-	def test_command(self):
-		"test printmodel command"
+    def test_command(self):
+        "test printmodel command"
         content = StringIO()
         call_command("printmodels", stdout=content)
         content.seek(0)
