@@ -55,7 +55,7 @@ class RequestModelTest(TestCase):
         response = self.client.get(cyrillic_path)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
-        response_path = filter(lambda r: r["id"] == 1, json_data)[0]["text"]
+        response_path = filter(lambda r: r["id"] == 1, json_data)[0]["link"]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_path, cyrillic_path)

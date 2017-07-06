@@ -34,7 +34,7 @@ var reload = function() {
       }
 
       requestRows.forEach(function(row){
-        requestsHolder.append('<div class="request-row" id="' + row.id +'">'+row.text+'</div>');
+        requestsHolder.append('<div class="request-row" id="' + row.id +'">'+row.link+'</div>');
       });
     }
   });

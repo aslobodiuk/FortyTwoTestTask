@@ -24,13 +24,7 @@ class JsonResponse(HttpResponse):
 
 def help(request):
     requests = Request.objects.order_by('-time')[:10]
-    json_resp = []
-    for r in requests.values():
-        json_resp.append({
-            "text": r["link"],
-            "id": r["id"]
-        })
-    return JsonResponse(json_resp)
+    return JsonResponse(list(requests.values('link', 'id')))
 
 
 def requests(request):

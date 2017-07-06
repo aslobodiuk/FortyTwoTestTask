@@ -100,7 +100,7 @@ class RequestViewTest(TestCase):
 
         self.assertEqual(len(json_data), 10)
         for i in range(10):
-            self.assertEqual(json_data[i]['text'], '/help/')
+            self.assertEqual(json_data[i]['link'], '/help/')
             self.assertTrue(json_data[i]['id'] in ids[-10:])
 
     def test_for_last_requests_lt_10(self):
@@ -117,7 +117,7 @@ class RequestViewTest(TestCase):
 
         self.assertEqual(len(json_data), cnt)
         for i in range(cnt):
-            self.assertEqual(json_data[i]['text'], '/help/')
+            self.assertEqual(json_data[i]['link'], '/help/')
             self.assertTrue(json_data[i]['id'] in ids[-cnt:])
 
 
