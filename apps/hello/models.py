@@ -27,12 +27,13 @@ class Person(models.Model):
 class Request(models.Model):
     link = models.URLField()
     time = models.DateTimeField(auto_now_add=True)
+    priority = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '%s' % self.link
 
     class Meta:
-        ordering = ["time"]
+        ordering = ["priority", "time"]
 
 
 class Change(models.Model):
