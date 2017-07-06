@@ -11,7 +11,7 @@ class TemplateTagTest(TestCase):
         self.person = mommy.make(Person)
 
     def test_template_tag_edit_link(self):
-        "test for edit_link template tag"
+        "test for rendering edit_link tag and for its arguments"
         t = Template('{% load hello_extras %}{% edit_link person %}')
         person = Person.objects.first()
         c = Context({'person': person})

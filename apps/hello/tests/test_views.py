@@ -71,7 +71,7 @@ class AdminDataTest(TestCase):
 class RequestViewTest(TestCase):
 
     def test_request(self):
-        "test for view"
+        "test for view, check st_code, content_type"
         response = self.client.get(reverse(views.requests))
 
         self.assertEqual(response.status_code, 200)
@@ -79,7 +79,7 @@ class RequestViewTest(TestCase):
         self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
 
     def test_help(self):
-        "test for help view"
+        "test for help view, check st_code, content_type"
         response = self.client.get(reverse(views.help))
 
         self.assertEqual(response.status_code, 200)
@@ -146,7 +146,7 @@ class EditViewTest(TestCase):
         self.assertContains(response, c.jabber)
 
     def test_django_widget(self):
-        "test for datepicker widget"
+        "test for rendering datepicker widget"
         self.client.login(username='admin', password='admin')
         response = self.client.get(reverse('edit'))
         self.assertContains(
@@ -159,7 +159,7 @@ class EditViewTest(TestCase):
         )
 
     def test_auth(self):
-        "test auth"
+        "test for required login in edit page"
         response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 302)
         self.client.login(username="admin", password="admin")
@@ -167,7 +167,7 @@ class EditViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_ajax_form_with_fail_context(self):
-        "wrong context"
+        "test ajax submit with wrong context"
         self.client.login(username='admin', password='admin')
 
         fail_context_em_bio = {
@@ -198,7 +198,7 @@ class EditViewTest(TestCase):
         self.assertContains(response, 'Enter a valid email')
 
     def test_ajax_form_with_right_context(self):
-        "right context"
+        "test ajax submit with right context"
         self.client.login(username='admin', password='admin')
         context = {
             'name': 'Vasya',
@@ -213,7 +213,7 @@ class EditViewTest(TestCase):
         self.assertContains(response, "success")
 
     def test_right_post_data(self):
-        "right post data"
+        "test edit page with right post data"
         self.client.login(username='admin', password='admin')
         context = {
             'name': 'Vasya',
@@ -238,7 +238,7 @@ class EditViewTest(TestCase):
         self.assertEqual(p.othercontacts, context["othercontacts"])
 
     def test_with_wrong_post_data(self):
-        "wrong post data"
+        "test edit page with wrong post data"
         self.client.login(username='admin', password='admin')
         p = Person.objects.first()
         context = {
