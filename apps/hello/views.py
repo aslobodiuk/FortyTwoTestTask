@@ -28,9 +28,6 @@ def help(request):
 
 
 def requests(request):
-    r = Request.objects.all()
-    for p in r:
-        p.delete()
     return render(request, 'requests.html', {})
 
 
