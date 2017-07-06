@@ -1,4 +1,3 @@
-from json import dumps
 from django.shortcuts import render
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
@@ -45,18 +44,17 @@ def edit(request):
             form.save()
             p = '%s' % last.photo
             p_url = '%s' % last.photo.url
-            return HttpResponse(
-                dumps({'picture': p, 'pict_url': p_url, 'result': 'success'})
+            return JsonResponse(
+                {'picture': p, 'pict_url': p_url, 'result': 'success'}
             )
         else:
             response = {}
             for k in form.errors:
                 for i in range(len(form.errors[k])):
                     response[k+str(i)] = form.errors[k][i]
-            return HttpResponse(dumps({
-                'response': response,
-                'result': 'error'
-            }))
+            return JsonResponse(
+                {'response': response, 'result': 'error'}
+            )
     else:
         form = ContactForm(instance=last)
     return render(request, 'edit.html', {'form': form})
