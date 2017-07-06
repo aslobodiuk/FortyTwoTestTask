@@ -121,6 +121,25 @@ class RequestViewTest(TestCase):
             self.assertTrue(json_data[i]['id'] in ids[-cnt:])
 
 
+class PriorityViewTest(TestCase):
+
+    def test_request(self):
+        "test for view, check st_code, content_type"
+        response = self.client.get(reverse(views.priority))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'priority.html')
+        self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
+
+    def test_priority(self):
+        "test if fields with priority=True are in requests page"
+        Request.objects.create(link="/new/", priority=True)
+        for i in range(10):
+            Request.objects.create(link="/path/")
+        response = self.client.get(reverse('requests'))
+        self.assertContains(response, '/new/')
+
+
 class EditViewTest(TestCase):
 
     def setUp(self):
