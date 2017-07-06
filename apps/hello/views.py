@@ -51,7 +51,8 @@ def edit(request):
         else:
             response = {}
             for k in form.errors:
-                response[k] = form.errors[k][0]
+                for i in range(len(form.errors[k])):
+                    response[k+str(i)] = form.errors[k][i]
             return HttpResponse(dumps({
                 'response': response,
                 'result': 'error'
