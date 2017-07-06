@@ -211,6 +211,8 @@ class EditViewTest(TestCase):
         }
         response = self.client.post(reverse('edit'), context)
         self.assertContains(response, "success")
+        self.assertContains(response, self.person.photo)
+        self.assertContains(response, self.person.photo.url)
 
     def test_right_post_data(self):
         "test edit page with right post data"
