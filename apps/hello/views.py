@@ -29,6 +29,9 @@ def help(request):
 def requests(request):
     return render(request, 'requests.html', {})
 
+def priority(request):
+    return render(request, 'priority.html', {})
+
 
 def home(request):
     p = Person.objects.first()
