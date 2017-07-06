@@ -3,7 +3,7 @@ from django.test import TestCase
 from model_mommy import mommy
 from django.template import Template, Context, TemplateSyntaxError
 
-from .models import Person
+from apps.hello.models import Person
 
 
 class TemplateTagTest(TestCase):

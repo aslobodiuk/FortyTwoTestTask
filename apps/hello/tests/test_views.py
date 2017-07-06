@@ -5,8 +5,8 @@ from django.test import TestCase
 from model_mommy import mommy
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from .models import Person
-from . import views
+from apps.hello.models import Person
+from apps.hello import views
 
 
 class HomeViewTest(TestCase):

@@ -4,8 +4,8 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from model_mommy import mommy
 
-from .models import Person, Request
-from . import views
+from apps.hello.models import Person, Request
+from apps.hello import views
 
 
 class PersonModelTest(TestCase):
