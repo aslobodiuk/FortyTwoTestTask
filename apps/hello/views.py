@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
+from django.forms.models import modelformset_factory
 from django.http import HttpResponse
 from .models import Person, Request
 from .forms import ContactForm
@@ -22,7 +23,7 @@ class JsonResponse(HttpResponse):
 
 
 def help(request):
-    requests = Request.objects.order_by('-time')[:10]
+    requests = Request.objects.order_by("-priority", "-time")[:10]
     return JsonResponse(list(requests.values('link', 'id')))
 
 
@@ -30,8 +31,24 @@ def requests(request):
     return render(request, 'requests.html', {})
 
 
+@login_required()
 def priority(request):
-    return render(request, 'priority.html', {})
+    RequestFormSet = modelformset_factory(
+        Request,
+        fields=('priority',),
+        extra=0
+        )
+    if request.method == 'POST':
+        formset = RequestFormSet(
+            request.POST,
+            queryset=Request.objects.order_by('-time')
+            )
+        if formset.is_valid():
+            formset.save()
+            return redirect("requests")
+    else:
+        formset = RequestFormSet(queryset=Request.objects.order_by('-time'))
+    return render(request, "priority.html", {"formset": formset})
 
 
 def home(request):

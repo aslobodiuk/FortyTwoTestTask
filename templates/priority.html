@@ -9,20 +9,17 @@
     <form method="post" action="">
         {% csrf_token %}
 
-        <div class="request-holder">
-            <input type="checkbox">  /edit/<br>
-            <input type="checkbox">  /<br>
-            <input type="checkbox">  /help/<br>
-            <input type="checkbox">  /edit/<br>
-            <input type="checkbox">  /edit/<br>
-            <input type="checkbox">  /requests/<br>
-            <input type="checkbox">  /requests/<br>
-            <input type="checkbox">  /<br>
-        </div>
-        <br>
-        <div class="control">
+        <div style="margin-left: 30px;">
             <input type="submit" value="Save" id="sendbutton" class='btn btn-default'/>
             <a href="{% url 'requests' %}" class='btn btn-default'>Return</a>
+        </div>
+        <br>
+
+        <div class="request-holder">{{ formset.management_form }}
+            {% for form in formset %}
+                {{ form.id }}
+                <div class="row">{{ form.priority }}  {{ form.instance.link }}</div>
+            {% endfor %}
         </div>
     </form>
 {% endblock %}

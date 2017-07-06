@@ -14,7 +14,7 @@ class HomeViewTest(TestCase):
     def setUp(self):
         self.person = mommy.make(Person)
 
-    def test_home(self):
+    def test_home_view_context(self):
         "test for view, checking context, rendering to html"
         response = self.client.get(reverse(views.home))
         c = Person.objects.first()
@@ -70,7 +70,7 @@ class AdminDataTest(TestCase):
 
 class RequestViewTest(TestCase):
 
-    def test_request(self):
+    def test_request_view(self):
         "test for view, check st_code, content_type"
         response = self.client.get(reverse(views.requests))
 
@@ -78,7 +78,7 @@ class RequestViewTest(TestCase):
         self.assertTemplateUsed(response, 'requests.html')
         self.assertEqual(response['Content-Type'], 'text/html; charset=utf-8')
 
-    def test_help(self):
+    def test_help_view(self):
         "test for help view, check st_code, content_type"
         response = self.client.get(reverse(views.help))
 
@@ -121,10 +121,26 @@ class RequestViewTest(TestCase):
             self.assertTrue(json_data[i]['id'] in ids[-cnt:])
 
 
-class PriorityViewTest(TestCase):
+class PriorityTest(TestCase):
 
-    def test_request(self):
+    def setUp(self):
+        self.user = User.objects.create_superuser(
+            username='admin',
+            email='aslobodiuk@example.com',
+            password='admin'
+        )
+
+    def test_required_login(self):
+        "test for required login in priority page"
+        response = self.client.get(reverse('priority'))
+        self.assertEqual(response.status_code, 302)
+        self.client.login(username="admin", password="admin")
+        response = self.client.get(reverse('priority'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_priority_view(self):
         "test for view, check st_code, content_type"
+        self.client.login(username="admin", password="admin")
         response = self.client.get(reverse(views.priority))
 
         self.assertEqual(response.status_code, 200)
@@ -133,11 +149,11 @@ class PriorityViewTest(TestCase):
 
     def test_priority(self):
         "test if fields with priority=True are in requests page"
-        Request.objects.create(link="/new/", priority=True)
+        r = Request.objects.create(link="/new/", priority=True)
         for i in range(10):
             Request.objects.create(link="/path/")
-        response = self.client.get(reverse('requests'))
-        self.assertContains(response, '/new/')
+        response = self.client.get(reverse('help'))
+        self.assertContains(response, r.link)
 
 
 class EditViewTest(TestCase):
@@ -177,7 +193,7 @@ class EditViewTest(TestCase):
             '''{dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-50:'}'''
         )
 
-    def test_auth(self):
+    def test_required_login(self):
         "test for required login in edit page"
         response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 302)

@@ -32,9 +32,6 @@ class Request(models.Model):
     def __unicode__(self):
         return '%s' % self.link
 
-    class Meta:
-        ordering = ["priority", "time"]
-
 
 class Change(models.Model):
     STATUS_CHOICES = (
