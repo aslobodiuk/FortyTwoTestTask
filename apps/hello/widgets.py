@@ -3,6 +3,13 @@ from django.utils.safestring import mark_safe
 
 
 class DatePickerWidget(forms.DateInput):
+    class Media:
+        css = {
+            'all': ("https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",)
+        }
+        js = (
+            "https://code.jquery.com/ui/1.12.1/jquery-ui.js",
+        )
 
     def __init__(self, params='', attrs=None):
         self.params = params
