@@ -5,7 +5,7 @@ from django.test import TestCase
 from model_mommy import mommy
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from apps.hello.models import Person
+from apps.hello.models import Person, Request
 from apps.hello import views
 
 
@@ -85,25 +85,40 @@ class RequestViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/json')
 
-    def test_for_last_10_requests(self):
+    def test_for_last_10_requests_new(self):
         "test if view return last 10 requests"
         for i in range(10):
-            response = self.client.get(reverse(views.home))
+            Request.objects.create(link="/path/")
         for i in range(10):
-            response = self.client.get(reverse(views.help))
+            Request.objects.create(link="/help/")
+        response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
+
+        ids = []
+        for r in Request.objects.all():
+            ids.append(r.id)
 
         self.assertEqual(len(json_data), 10)
         for i in range(10):
-            self.assertEqual(json_data[i]['text'], reverse(views.help))
-            self.assertTrue(json_data[i]['id'] in range(11, 21))
+            self.assertEqual(json_data[i]['text'], '/help/')
+            self.assertTrue(json_data[i]['id'] in ids[-10:])
 
     def test_for_last_requests_lt_10(self):
         "test if db has less than 10 requests"
         for i in range(5):
-            response = self.client.get(reverse(views.help))
+            Request.objects.create(link="/help/")
+        response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
-        self.assertEqual(len(json_data), 5)
+
+        cnt = Request.objects.all().count()
+        ids = []
+        for r in Request.objects.all():
+            ids.append(r.id)
+
+        self.assertEqual(len(json_data), cnt)
+        for i in range(cnt):
+            self.assertEqual(json_data[i]['text'], '/help/')
+            self.assertTrue(json_data[i]['id'] in ids[-cnt:])
 
 
 class EditViewTest(TestCase):
