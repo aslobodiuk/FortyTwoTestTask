@@ -145,7 +145,7 @@ class EditViewTest(TestCase):
 
     def test_auth(self):
         "test auth"
-        response = self.client.post(reverse('edit'))
+        response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 302)
         self.client.login(username="admin", password="admin")
         response = self.client.get(reverse('edit'))

@@ -44,7 +44,7 @@ def home(request):
 
 @login_required()
 def edit(request):
-    last = Person.objects.filter().reverse()[0]
+    last = Person.objects.first()
     if request.method == 'POST':
         form = ContactForm(request.POST, request.FILES, instance=last)
         if form.is_valid():
