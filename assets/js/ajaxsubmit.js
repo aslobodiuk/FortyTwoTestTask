@@ -13,8 +13,10 @@ function readURL(input) {
 
 function display_form_errors(errors, $form) {
     for (var k in errors) {
-        $form.find('input[id= id_' + k.substring(0, k.length - 1) + ']').after('<div class="errors">' + errors[k] + '</div>');
-        $form.find('textarea[id= id_' + k.substring(0, k.length - 1) + ']').after('<div class="errors">' + errors[k] + '</div>');
+        for (var i = 0; i < errors[k].length; i++){
+            $form.find('input[id= id_' + k + ']').after('<div class="errors">' + errors[k][i] + '</div>');
+            $form.find('textarea[id= id_' + k + ']').after('<div class="errors">' + errors[k][i] + '</div>');
+        }
     }
 }
 

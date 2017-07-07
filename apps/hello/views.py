@@ -71,8 +71,7 @@ def edit(request):
         else:
             response = {}
             for k in form.errors:
-                for i in range(len(form.errors[k])):
-                    response[k+str(i)] = form.errors[k][i]
+                response[k] = [el for el in form.errors[k]]
             return JsonResponse(
                 {'response': response, 'result': 'error'}
             )
