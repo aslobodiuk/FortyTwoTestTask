@@ -87,38 +87,31 @@ class RequestViewTest(TestCase):
 
     def test_for_last_10_requests_new(self):
         "test if view return last 10 requests"
-        for i in range(10):
-            Request.objects.create(link="/path/")
-        for i in range(10):
-            Request.objects.create(link="/help/")
+        for i in range(20):
+            self.request = mommy.make(Request)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
 
-        ids = []
-        for r in Request.objects.all():
-            ids.append(r.id)
-
         self.assertEqual(len(json_data), 10)
-        for i in range(10):
-            self.assertEqual(json_data[i]['link'], '/help/')
-            self.assertTrue(json_data[i]['id'] in ids[-10:])
+        self.assertEqual(
+            json_data,
+            list(Request.objects.order_by('-time')[:10].values('link', 'id'))
+            )
 
     def test_for_last_requests_lt_10(self):
         "test if db has less than 10 requests"
         for i in range(5):
-            Request.objects.create(link="/help/")
+            self.request = mommy.make(Request)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
 
         cnt = Request.objects.all().count()
-        ids = []
-        for r in Request.objects.all():
-            ids.append(r.id)
 
         self.assertEqual(len(json_data), cnt)
-        for i in range(cnt):
-            self.assertEqual(json_data[i]['link'], '/help/')
-            self.assertTrue(json_data[i]['id'] in ids[-cnt:])
+        self.assertEqual(
+            json_data,
+            list(Request.objects.order_by('-time')[:cnt].values('link', 'id'))
+            )
 
 
 class PriorityTest(TestCase):
