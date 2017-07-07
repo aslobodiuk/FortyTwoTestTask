@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
@@ -52,7 +52,7 @@ def priority(request):
 
 
 def home(request):
-    p = Person.objects.first()
+    p = get_object_or_404(Person, pk=1)
     return render(request, 'home.html', {'p': p})
 
 

@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from model_mommy import mommy
 
-from apps.hello.models import Request
+from apps.hello.models import Request, Person
 from apps.hello import views
 
 
 class MiddlewareTests(TestCase):
+
+    def setUp(self):
+        self.person = mommy.make(Person)
 
     def test_requestProcessing(self):
         "test middleware for input data in model"

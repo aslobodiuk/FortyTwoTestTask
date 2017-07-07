@@ -10,25 +10,38 @@ from apps.hello import views
 
 class PersonModelTest(TestCase):
 
-    def setUp(self):
-        self.person = mommy.make(Person)
-
     def test_string_representation(self):
         "test string representations"
-        p = Person.objects.first()
+        p = mommy.make(Person)
         self.assertEqual(str(p), p.name + ' ' + p.lastname)
 
-    def test_model_person(self):
-        "existing of initial Person data"
-        self.assertTrue(Person.objects.filter(pk=1).exists())
+    def test_two_elements_in_db(self):
+        "testing 2 elements in DB rendering first element in home view"
+        p1 = mommy.make(Person)
+        p2 = mommy.make(Person)
 
-    def test_model_el_cnt(self):
-        "testing empty, or 2+ elements in DB"
-        self.assertEqual(Person.objects.all().count(), 1)
+        response = self.client.get(reverse(views.home))
+
+        self.assertEqual(response.context["p"], p1)
+        self.assertNotEqual(response.context["p"], p2)
+
+        self.assertContains(response, p1.name)
+        self.assertContains(response, p1.lastname)
+        self.assertContains(response, p1.dob.year)
+        self.assertContains(response, p1.dob.month)
+        self.assertContains(response, p1.dob.day)
+        self.assertContains(response, p1.email)
+        self.assertContains(response, p1.jabber)
+        self.assertContains(response, p1.skype)
+
+    def test_empty_db(self):
+        "return 404 if db is empty"
+        response = self.client.get(reverse(views.home))
+        self.assertEqual(response.status_code, 404)
 
     def test_unicode_in_db(self):
         "test сyrillic in db"
-        p = Person.objects.first()
+        p = mommy.make(Person)
         p.name = u"Алексей"
         p.lastname = u"Слободюк"
         p.save()
@@ -46,7 +59,7 @@ class RequestModelTest(TestCase):
 
     def test_string_representation(self):
         "test string representations"
-        req = Request(link="/requests/")
+        req = mommy.make(Request)
         self.assertEqual(str(req), req.link)
 
     def test_unicode_in_db(self):

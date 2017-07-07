@@ -88,7 +88,7 @@ class RequestViewTest(TestCase):
     def test_for_last_10_requests_new(self):
         "test if view return last 10 requests"
         for i in range(20):
-            self.request = mommy.make(Request)
+            mommy.make(Request)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
 
@@ -101,7 +101,7 @@ class RequestViewTest(TestCase):
     def test_for_last_requests_lt_10(self):
         "test if db has less than 10 requests"
         for i in range(5):
-            self.request = mommy.make(Request)
+            mommy.make(Request)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
 
