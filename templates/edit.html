@@ -17,9 +17,20 @@
     <div class="row">
       <div class="col-sm-1 col-md-1 col-lg-1"></div>
       <div class="col-sm-12 col-md-5 col-lg-5">
+        {{ form.dob.params}}
         <p><div class="label">Name:</div>{{form.name}}</p>
         <p><div class="label">Last name:</div>{{form.lastname}}</p>
         <div class="label">Date of birth:</div>{{form.dob}}
+        
+        <script type="text/javascript">
+          $dob = $('#id_dob'); 
+          $dob.datepicker({
+            dateFormat: $dob.attr("dateFormat"),
+            changeYear: $dob.attr("changeYear"),
+            yearRange: $dob.attr("yearRange")
+          });
+        </script>
+        
         <p><div class="label">Photo:</div>{{form.photo}}</p>
         <img id="images">
       </div>  
