@@ -20,7 +20,7 @@ class TemplateTagTest(TestCase):
             u'<a href="/admin/hello/person/1/">Edit (admin)</a>'
             )
 
-    def test(self):
+    def test_template_tag_edit_link_arguments(self):
         "test for arguments in edit_link tag"
         c = Context({'person': self.person})
 
