@@ -1,31 +1,30 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
-
+from model_mommy import mommy
 from apps.hello.models import Person, Change
 
 
 class HttpTest(TestCase):
 
-    def test_signal_processor(self):
-        "test for signal, add data to change model"
-        p = Person(
-            name='Vasya',
-            lastname='Pupkin',
-            dob='1994-09-15',
-            email='aslobodiuk@gmail.com',
-            jabber='asdsd@42cc.com',
-            bio='fasfasf',
-            othercontacts='asdfwec'
-        )
-        p.save()
+    def setUp(self):
+        self.person = mommy.make(Person)
+
+    def test_signal_object_creation(self):
+        "test for creating db entry about object creation"
         ch = Change.objects.order_by('-time')[0]
         self.assertEqual(ch.status, 'C')
         self.assertEqual(ch.model.lower(), 'person')
-        self.assertEqual(ch.object, u'%s' % p.pk)
-        p.first_name = 'Ivan'
-        p.save()
+        self.assertEqual(ch.object, u'%s' % self.person.pk)
+
+    def test_signal_object_editing(self):
+        "test for creating db entry about object editing"
+        self.person.first_name = 'Ivan'
+        self.person.save()
         ch = Change.objects.order_by('-time')[0]
         self.assertEqual(ch.status, 'U')
-        p.delete()
+
+    def test_signal_object_deletion(self):
+        "test for creating db entry about object deletion"
+        self.person.delete()
         ch = Change.objects.order_by('-time')[0]
         self.assertEqual(ch.status, 'D')

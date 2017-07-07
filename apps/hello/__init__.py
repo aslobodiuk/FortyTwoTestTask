@@ -1,2 +1,3 @@
 import signals
-print signals
+
+__all__ = ['signals']
