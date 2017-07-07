@@ -36,8 +36,8 @@ class TemplateTagTest(TestCase):
             render,
             '{% load hello_extras %}{% edit_link %}'
             )
-        '''self.assertRaises(
+        self.assertRaises(
             TemplateSyntaxError,
             render,
-            '{% load hello_extras %}{% edit_link asdfghjewdb %}'
-            )'''
+            '{% load hello_extras %}{% edit_link qwerty %}'
+            )

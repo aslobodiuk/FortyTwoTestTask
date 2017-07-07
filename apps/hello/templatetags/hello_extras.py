@@ -38,4 +38,4 @@ class LinkNode(template.Node):
                     )
             )
         except template.VariableDoesNotExist:
-            return ''
+            raise template.TemplateSyntaxError("Tag requires a model entry")

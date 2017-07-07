@@ -4,7 +4,7 @@ from model_mommy import mommy
 from apps.hello.models import Person, Change
 
 
-class HttpTest(TestCase):
+class SignalTest(TestCase):
 
     def setUp(self):
         self.person = mommy.make(Person)
