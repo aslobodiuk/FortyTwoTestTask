@@ -177,14 +177,10 @@ class EditViewTest(TestCase):
         "test for rendering datepicker widget"
         self.client.login(username='admin', password='admin')
         response = self.client.get(reverse('edit'))
-        self.assertContains(
-            response,
-            '''<input id="id_dob"'''
-        )
-        self.assertContains(
-            response,
-            '''{dateFormat: 'yy-mm-dd', changeYear: true, yearRange: '-50:'}'''
-        )
+        self.assertContains(response, '''id="id_dob"''')
+        self.assertContains(response, '''changeYear="True"''')
+        self.assertContains(response, '''dateFormat="yy-mm-dd"''')
+        self.assertContains(response, '''yearRange="-50:"''')
 
     def test_required_login(self):
         "test for required login in edit page"

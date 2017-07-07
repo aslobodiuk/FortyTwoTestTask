@@ -9,7 +9,11 @@ class ContactForm(ModelForm):
         model = Person
         widgets = {
             'dob': DatePickerWidget(
-                attrs={'dateFormat': 'yy-mm-dd', "changeYear": True, "yearRange": '-50:'}
+                attrs={
+                    "dateFormat": 'yy-mm-dd',
+                    "changeYear": True,
+                    "yearRange": '-50:'
+                }
             )
         }
 
