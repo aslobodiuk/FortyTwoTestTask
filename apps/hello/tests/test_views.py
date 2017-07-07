@@ -238,6 +238,13 @@ class EditViewTest(TestCase):
             'othercontacts': 'asdfwec',
         }
         response = self.client.post(reverse('edit'), context)
+
+        r = json.loads(response.content)
+
+        self.assertEqual(r["result"], "success")
+        self.assertEqual(r["picture"], self.person.photo)
+        self.assertEqual(r["pict_url"], self.person.photo.url)
+
         self.assertContains(response, "success")
         self.assertContains(response, self.person.photo)
         self.assertContains(response, self.person.photo.url)
