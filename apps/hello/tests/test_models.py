@@ -65,10 +65,12 @@ class RequestModelTest(TestCase):
     def test_unicode_in_db(self):
         "test сyrillic in db"
         cyrillic_path = u"/тест/"
-        response = self.client.get(cyrillic_path)
+        r = mommy.make(Request)
+        r.link = cyrillic_path
+        r.save()
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
-        response_path = filter(lambda r: r["id"] == 1, json_data)[0]["link"]
+        response_path = json_data[-1]["link"]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_path, cyrillic_path)

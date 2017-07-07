@@ -85,7 +85,7 @@ class RequestViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/json')
 
-    def test_for_last_10_requests_new(self):
+    def test_for_last_10_requests(self):
         "test if view return last 10 requests"
         for i in range(20):
             mommy.make(Request)
