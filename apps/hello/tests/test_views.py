@@ -142,9 +142,11 @@ class PriorityTest(TestCase):
 
     def test_priority(self):
         "test if fields with priority=True are in requests page"
-        r = Request.objects.create(link="/new/", priority=True)
+        r = mommy.make(Request)
+        r.priority = True
+        r.save()
         for i in range(10):
-            Request.objects.create(link="/path/")
+            mommy.make(Request)
         response = self.client.get(reverse('help'))
         self.assertContains(response, r.link)
 
