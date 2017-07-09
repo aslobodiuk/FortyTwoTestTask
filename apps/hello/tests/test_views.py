@@ -183,10 +183,14 @@ class PriorityTest(TestCase):
 
     def test_priority(self):
         "test if fields with priority=True are in requests page"
-        r = mommy.make(Request, priority=True)
+        mommy.make(Request, priority=True, _quantity=3)
         mommy.make(Request, _quantity=10)
         response = self.client.get(reverse('help'))
-        self.assertContains(response, r.link)
+        requests = Request.objects.order_by("-priority", "-time")[:10]
+        self.assertEqual(
+            json.loads(response.content),
+            list(requests.values('link', 'id'))
+            )
 
 
 class EditViewTest(TestCase):
