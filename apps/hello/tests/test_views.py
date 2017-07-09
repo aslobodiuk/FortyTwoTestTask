@@ -11,13 +11,10 @@ from apps.hello import views
 
 class HomeViewTest(TestCase):
 
-    def setUp(self):
-        self.person = mommy.make(Person)
-
     def test_home_view_context(self):
         "test for view, checking context, rendering to html"
+        c = mommy.make(Person)
         response = self.client.get(reverse(views.home))
-        c = Person.objects.first()
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
@@ -34,8 +31,8 @@ class HomeViewTest(TestCase):
 
     def test_data_in_template(self):
         "test if template contains data from db"
+        c = mommy.make(Person)
         response = self.client.get(reverse(views.home))
-        c = Person.objects.first()
 
         self.assertContains(response, c.name)
         self.assertContains(response, c.lastname)
@@ -45,6 +42,41 @@ class HomeViewTest(TestCase):
         self.assertContains(response, c.email)
         self.assertContains(response, c.jabber)
         self.assertContains(response, c.skype)
+
+    def test_two_elements_in_db(self):
+        "testing 2 elements in DB rendering first element in home view"
+        p1 = mommy.make(Person)
+        p2 = mommy.make(Person)
+
+        response = self.client.get(reverse(views.home))
+
+        self.assertEqual(response.context["p"], p1)
+        self.assertNotEqual(response.context["p"], p2)
+
+        self.assertContains(response, p1.name)
+        self.assertContains(response, p1.lastname)
+        self.assertContains(response, p1.dob.year)
+        self.assertContains(response, p1.dob.month)
+        self.assertContains(response, p1.dob.day)
+        self.assertContains(response, p1.email)
+        self.assertContains(response, p1.jabber)
+        self.assertContains(response, p1.skype)
+
+    def test_empty_db(self):
+        "return 404 if db is empty"
+        response = self.client.get(reverse(views.home))
+        self.assertEqual(response.status_code, 404)
+
+    def test_unicode_in_db(self):
+        "test сyrillic in db"
+        mommy.make(Person, name=u"Алексей", lastname=u"Слободюк")
+        response = self.client.get(reverse(views.home))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["p"].name, u"Алексей")
+        self.assertEqual(response.context["p"].lastname, u"Слободюк")
+        self.assertContains(response, u"Алексей")
+        self.assertContains(response, u"Слободюк")
 
 
 class AdminDataTest(TestCase):
@@ -87,8 +119,7 @@ class RequestViewTest(TestCase):
 
     def test_for_last_10_requests(self):
         "test if view return last 10 requests"
-        for i in range(20):
-            mommy.make(Request)
+        mommy.make(Request, _quantity=20)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
 
@@ -100,8 +131,7 @@ class RequestViewTest(TestCase):
 
     def test_for_last_requests_lt_10(self):
         "test if db has less than 10 requests"
-        for i in range(5):
-            mommy.make(Request)
+        mommy.make(Request, _quantity=5)
         response = self.client.get(reverse(views.help))
         json_data = json.loads(response.content)
 
@@ -112,6 +142,17 @@ class RequestViewTest(TestCase):
             json_data,
             list(Request.objects.order_by('-time')[:cnt].values('link', 'id'))
             )
+
+    def test_unicode_in_db(self):
+        "test сyrillic in db"
+        cyrillic_path = u"/тест/"
+        mommy.make(Request, link=cyrillic_path)
+        response = self.client.get(reverse(views.help))
+        json_data = json.loads(response.content)
+        response_path = json_data[-1]["link"]
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_path, cyrillic_path)
 
 
 class PriorityTest(TestCase):
@@ -142,11 +183,8 @@ class PriorityTest(TestCase):
 
     def test_priority(self):
         "test if fields with priority=True are in requests page"
-        r = mommy.make(Request)
-        r.priority = True
-        r.save()
-        for i in range(10):
-            mommy.make(Request)
+        r = mommy.make(Request, priority=True)
+        mommy.make(Request, _quantity=10)
         response = self.client.get(reverse('help'))
         self.assertContains(response, r.link)
 

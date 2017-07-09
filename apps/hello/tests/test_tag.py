@@ -7,37 +7,38 @@ from apps.hello.models import Person
 
 
 class TemplateTagTest(TestCase):
+
     def setUp(self):
         self.person = mommy.make(Person)
+        self.c = Context({'person': self.person})
+
+    def render(self, t, c): return Template(t).render(c)
 
     def test_template_tag_edit_link(self):
         "test for rendering edit_link tag"
-        t = Template('{% load hello_extras %}{% edit_link person %}')
-        c = Context({'person': self.person})
-        rendered = t.render(c)
+        t = '{% load hello_extras %}{% edit_link person %}'
         self.assertEqual(
-            rendered,
+            self.render(t, self.c),
             u'<a href="/admin/hello/person/1/">Edit (admin)</a>'
             )
 
     def test_template_tag_edit_link_arguments(self):
-        "test for arguments in edit_link tag"
-        c = Context({'person': self.person})
-
-        def render(t): return Template(t).render(c)
-
+        "test for incorrect arguments in edit_link tag"
         self.assertRaises(
             TemplateSyntaxError,
-            render,
-            '{% load hello_extras %}{% edit_link person asdasdsd %}'
+            self.render,
+            '{% load hello_extras %}{% edit_link person asdasdsd %}',
+            self.c
             )
         self.assertRaises(
             TemplateSyntaxError,
-            render,
-            '{% load hello_extras %}{% edit_link %}'
+            self.render,
+            '{% load hello_extras %}{% edit_link %}',
+            self.c
             )
         self.assertRaises(
             TemplateSyntaxError,
-            render,
-            '{% load hello_extras %}{% edit_link qwerty %}'
+            self.render,
+            '{% load hello_extras %}{% edit_link qwerty %}',
+            self.c
             )

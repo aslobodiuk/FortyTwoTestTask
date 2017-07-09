@@ -69,11 +69,8 @@ def edit(request):
                 {'picture': p, 'pict_url': p_url, 'result': 'success'}
             )
         else:
-            response = {}
-            for k in form.errors:
-                response[k] = [el for el in form.errors[k]]
             return JsonResponse(
-                {'response': response, 'result': 'error'}
+                {'response': form.errors, 'result': 'error'}
             )
     else:
         form = ContactForm(instance=last)

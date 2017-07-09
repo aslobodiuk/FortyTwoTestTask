@@ -12,7 +12,7 @@ class DatePickerWidget(forms.DateInput):
             "https://code.jquery.com/ui/1.12.1/jquery-ui.js",
         )
 
-    def __init__(self, params=None, attrs=''):
+    def __init__(self, params=None, attrs={}):
         self.attrs = attrs
         super(DatePickerWidget, self).__init__(attrs=attrs)
 
