@@ -12,7 +12,13 @@ class DatePickerWidget(forms.DateInput):
             "https://code.jquery.com/ui/1.12.1/jquery-ui.js",
         )
 
-    def __init__(self, params=None, attrs={}):
+    def __init__(self, attrs=None):
+        if attrs is None:
+            attrs = {
+                        "dateFormat": 'yy-mm-dd',
+                        "changeYear": True,
+                        "yearRange": '-70:'
+                    }
         self.attrs = attrs
         super(DatePickerWidget, self).__init__(attrs=attrs)
 
