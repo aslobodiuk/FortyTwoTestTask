@@ -13,14 +13,14 @@ class DatePickerWidget(forms.DateInput):
         )
 
     def __init__(self, attrs=None):
-        if attrs is None:
-            attrs = {
+        self.attrs = {
                         "dateFormat": 'yy-mm-dd',
                         "changeYear": True,
                         "yearRange": '-70:'
                     }
-        self.attrs = attrs
-        super(DatePickerWidget, self).__init__(attrs=attrs)
+        if attrs is not None:
+            self.attrs.update(attrs)
+        super(DatePickerWidget, self).__init__(attrs=self.attrs)
 
     def render(self, name, value, attrs):
         rendered = super(DatePickerWidget, self).render(
