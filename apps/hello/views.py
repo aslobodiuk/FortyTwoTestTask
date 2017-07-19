@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.utils import simplejson
 from django.contrib.auth.decorators import login_required
 from django.forms.models import modelformset_factory
@@ -45,7 +45,6 @@ def priority(request):
             )
         if formset.is_valid():
             formset.save()
-            return redirect("requests")
     else:
         formset = RequestFormSet(queryset=Request.objects.order_by('-time'))
     return render(request, "priority.html", {"formset": formset})

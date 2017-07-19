@@ -1,25 +1,48 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block title %}{% endblock %}
 
 {% block content %}
 
+    {% block javascript %}
+        <script type='text/javascript' src="{% static 'js/all_requests.js' %}"></script>
+    {% endblock %}
+
     {% block content_title %}<h1>42 Coffee Cups Test Assignment</h1>{% endblock %}
 
-    <form method="post" action="">
+    <form id="request_form" method="post" action="">
         {% csrf_token %}
 
-        <div style="margin-left: 30px;">
-            <input type="submit" value="Save" id="sendbutton" class='btn btn-default'/>
-            <a href="{% url 'requests' %}" class='btn btn-default'>Return</a>
+        <div style="text-align: right; margin-right: 150px;">
+            <a href="{% url 'requests' %}">Return</a>
         </div>
         <br>
-
-        <div class="request-holder">{{ formset.management_form }}
-            {% for form in formset %}
-                {{ form.id }}
-                <div class="row">{{ form.priority }}  {{ form.instance.link }}</div>
-            {% endfor %}
+        <div class="row">
+            <div class="col-sm-2 col-md-2 col-lg-2"></div>
+            <div class="col-sm-8 col-md-8 col-lg-8">
+                <table id="myTable" style="text-align:center" class="table table-bordered">
+                    <thead>
+                        <tr>    
+                          <th>Time</th>
+                          <th>URL</th>
+                          <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ formset.management_form}}
+                        {% for form in formset %}
+                        <tr>
+                            {{ form.id }}
+                            <td>{{ form.instance.time }}</td>
+                            <td>{{ form.instance.link }}</td>
+                            <td>{{ form.priority }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </form>
 {% endblock %}
