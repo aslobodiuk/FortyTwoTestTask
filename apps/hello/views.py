@@ -52,9 +52,6 @@ def priority(request):
 
 def home(request):
     p = get_object_or_404(Person, pk=1)
-    f = Request.objects.all()
-    for el in f:
-        el.delete()
     return render(request, 'home.html', {'p': p})
 
 
