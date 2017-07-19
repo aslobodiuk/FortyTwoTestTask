@@ -23,7 +23,9 @@ class JsonResponse(HttpResponse):
 
 
 def help(request):
-    requests = Request.objects.order_by("-priority", "-time")[:10]
+    requests = Request.objects.exclude(
+            link__startswith="/static/"
+        ).order_by("-priority", "-time")[:10]
     return JsonResponse(list(requests.values('link', 'id')))
 
 
