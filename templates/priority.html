@@ -10,6 +10,7 @@
 
     {% block javascript %}
         <script type="text/javascript" src="{% static 'js/jquery.tablesorter.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.tablesorter.widgets.js' %}"></script>
         <script type='text/javascript' src="{% static 'js/all_requests.js' %}"></script>
     {% endblock %}
 
@@ -25,6 +26,10 @@
         <div class="row">
             <div class="col-sm-2 col-md-2 col-lg-2"></div>
             <div class="col-sm-8 col-md-8 col-lg-8">
+                <p><strong>Filter for priority: </strong></p>
+                <button type="button" class="btn btn-success" data-filter-column="2" data-filter-text="True">True</button>
+                <button type="button" class="btn btn-danger" data-filter-column="2" data-filter-text="False">False</button>
+                <button type="button" class="reset btn btn-default">Reset</button>
                 <table id="myTable" style="text-align:center" class="tablesorter">
                     <thead>
                         <tr>    
