@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from itertools import chain
 import json
 from django.test import TestCase
 from model_mommy import mommy
@@ -191,6 +192,37 @@ class PriorityTest(TestCase):
             json.loads(response.content),
             list(requests.values('link', 'id'))
             )
+
+    def test_for_default_queryset(self):
+        "test for default order of requests"
+        self.client.login(username="admin", password="admin")
+        mommy.make(Request, _quantity=4)
+        mommy.make(Request, link='/edit/1', _quantity=4)
+        mommy.make(Request, link='/static/2', _quantity=4)
+        mommy.make(Request, link='/admin/3', _quantity=4)
+        response = self.client.get(reverse(views.priority))
+
+        admin_queryset = Request.objects.filter(
+                link__startswith="/admin/"
+            ).order_by('-time')
+        static_queryset = Request.objects.filter(
+                link__startswith="/static/"
+            ).order_by('-time')
+        edit_queryset = Request.objects.filter(
+                link__startswith="/edit/"
+            ).order_by('-time')
+
+        other = Request.objects.exclude(
+                id__in=admin_queryset.values("id")
+            ).exclude(
+                id__in=static_queryset.values("id")
+            ).exclude(
+                id__in=edit_queryset.values("id")
+            ).order_by('-time')
+
+        result = list(chain(admin_queryset, static_queryset, edit_queryset, other))
+
+        self.assertEqual(list(response.context["formset"].get_queryset()), result)
 
 
 class EditViewTest(TestCase):
