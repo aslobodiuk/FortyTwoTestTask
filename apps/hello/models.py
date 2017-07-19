@@ -28,6 +28,7 @@ class Request(models.Model):
     link = models.URLField()
     time = models.DateTimeField(auto_now_add=True)
     priority = models.BooleanField(default=False)
+    link_type = models.PositiveIntegerField(default=0)
 
     def __unicode__(self):
         return '%s' % self.link

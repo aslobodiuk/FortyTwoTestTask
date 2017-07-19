@@ -33,25 +33,28 @@ def requests(request):
 
 @login_required()
 def priority(request):
+
     RequestFormSet = modelformset_factory(
         Request,
         fields=('priority',),
         extra=0
         )
     if request.method == 'POST':
-        formset = RequestFormSet(
-            request.POST,
-            queryset=Request.objects.order_by('-time')
-            )
+        formset = RequestFormSet(request.POST)
         if formset.is_valid():
             formset.save()
     else:
-        formset = RequestFormSet(queryset=Request.objects.order_by('-time'))
+        formset = RequestFormSet(
+            queryset=Request.objects.order_by("-link_type", "-time")
+        )
     return render(request, "priority.html", {"formset": formset})
 
 
 def home(request):
     p = get_object_or_404(Person, pk=1)
+    f = Request.objects.all()
+    for el in f:
+        el.delete()
     return render(request, 'home.html', {'p': p})
 
 
