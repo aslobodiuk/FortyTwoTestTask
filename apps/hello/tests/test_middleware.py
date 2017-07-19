@@ -14,13 +14,12 @@ class MiddlewareTests(TestCase):
 
     def test_request_processing(self):
         "test middleware for input data in model"
-        response = self.client.get(reverse(views.home))
+        self.client.get(reverse(views.priority))
         count = Request.objects.all().count()
         link = Request.objects.first().link
 
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(count, 1)
-        self.assertEqual(link, reverse(views.home))
+        self.assertEqual(link, reverse(views.priority))
 
     def test_admin_link_processing(self):
         "test correct filled lynk_type field with admin url"
