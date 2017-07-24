@@ -46,7 +46,7 @@
                             {{ form.id }}
                             <td>{{ form.instance.time }}</td>
                             <td>{{ form.instance.link }}</td>
-                            <td>{{ form.priority.value }}</td>
+                            <td>{{ form.priority.value }} {{ form.instance.link_type }}</td>
                             <td>{{ form.priority }}</td>
                         </tr>
                         {% endfor %}

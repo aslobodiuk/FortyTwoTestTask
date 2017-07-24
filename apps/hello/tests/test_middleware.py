@@ -20,27 +20,3 @@ class MiddlewareTests(TestCase):
 
         self.assertEqual(count, 1)
         self.assertEqual(link, reverse(views.priority))
-
-    def test_admin_link_processing(self):
-        "test correct filled lynk_type field with admin url"
-        self.client.get('/admin/qwrety/asd')
-        link_type = Request.objects.first().link_type
-        self.assertEqual(link_type, 3)
-
-    def test_static_link_processing(self):
-        "test correct filled lynk_type field with static url"
-        self.client.get('/static/qwrety/asd')
-        link_type = Request.objects.first().link_type
-        self.assertEqual(link_type, 2)
-
-    def test_edit_link_processing(self):
-        "test correct filled lynk_type field with edit url"
-        self.client.get('/edit/qwrety/asd')
-        link_type = Request.objects.first().link_type
-        self.assertEqual(link_type, 1)
-
-    def test_other_link_processing(self):
-        "test correct filled lynk_type field with other url"
-        self.client.get('/asdfwc/qwrety/asd')
-        link_type = Request.objects.first().link_type
-        self.assertEqual(link_type, 0)
