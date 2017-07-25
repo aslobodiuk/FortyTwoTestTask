@@ -33,15 +33,6 @@ class Request(models.Model):
     def __unicode__(self):
         return '%s' % self.link
 
-    def save(self, *args, **kwargs):
-        if self.link[0:7] == '/admin/':
-            self.link_type = 3
-        elif self.link[0:8] == '/static/':
-            self.link_type = 2
-        elif self.link[0:6] == '/edit/':
-            self.link_type = 1
-        super(Request, self).save(*args, **kwargs)
-
 
 class Change(models.Model):
     STATUS_CHOICES = (

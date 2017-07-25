@@ -197,9 +197,9 @@ class PriorityTest(TestCase):
         "test for default order of requests"
         self.client.login(username="admin", password="admin")
         mommy.make(Request, _quantity=4)
-        mommy.make(Request, link='/edit/1', _quantity=4)
-        mommy.make(Request, link='/static/2', _quantity=4)
-        mommy.make(Request, link='/admin/3', _quantity=4)
+        mommy.make(Request, link='/edit/1', link_type=1, _quantity=4)
+        mommy.make(Request, link='/static/2', link_type=2, _quantity=4)
+        mommy.make(Request, link='/admin/3', link_type=3, _quantity=4)
         response = self.client.get(reverse(views.priority))
 
         admin_queryset = Request.objects.filter(
